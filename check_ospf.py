@@ -205,7 +205,11 @@ def check_ospf(snmp_check_values):
 
             current_ip = value[1]
             current_rid = value[3]
-            ospf_status = int(value[5])
+            #BUG FIX ospfNbrState value is returned in string i.e for e.g full(8), which messes up the ospf_status int comparisons
+            #Fix is to strip off all characters from ospfNbrState value and convert the remaining number to int, BY Moosa Khalid Opsview
+            ospf_status_string = re.findall(r'\d', value[5])
+            ospf_status = int(ospf_status_string[0])
+            
 
             ## IP: Check for specified IP(s)
 
